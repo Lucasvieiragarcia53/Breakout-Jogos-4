@@ -1,0 +1,1 @@
+var pincel = document.getElementById('Canva').getContext("2d");
