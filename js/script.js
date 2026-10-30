@@ -15,6 +15,38 @@ const WIDTH = canvas.width;
 const HEIGHT = canvas.height;
 const keys = new Set();
 
+// ÁUDIOS
+const hitSounds = {
+  J1: new Audio("sons/hit player 1.wav"),
+  J2: new Audio("sons/hit player 2.wav")
+};
+
+const backgroundMusic = new Audio("sons/musica.mp3");
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.35;
+
+function playHitSound(player) {
+  const sound = hitSounds[player];
+
+  if (!sound) return;
+
+  sound.currentTime = 0;
+  sound.play().catch(error => {
+    console.warn("Erro ao reproduzir efeito sonoro:", error);
+  });
+}
+
+function playBackgroundMusic() {
+  backgroundMusic.play().catch(error => {
+    console.warn("Erro ao reproduzir música:", error);
+  });
+}
+
+function stopBackgroundMusic() {
+  backgroundMusic.pause();
+  backgroundMusic.currentTime = 0;
+}
+
 class GameObject {
   constructor(x, y, width, height, color) {
     this.x = x;
@@ -33,6 +65,7 @@ class GameObject {
 class Paddle extends GameObject {
   constructor(x, y, color, controls, label) {
     super(x, y, 116, 13, color);
+
     this.speed = 7;
     this.controls = controls;
     this.label = label;
@@ -120,7 +153,11 @@ class Ball extends GameObject {
       ) {
         this.y = paddle.y - this.height;
         this.vy = -Math.abs(this.vy);
+
         this.lastHitPlayer = paddle.label;
+
+        // SOM DE COLISÃO DO JOGADOR
+        playHitSound(paddle.label);
 
         const hit =
           (this.x + this.width / 2) -
@@ -196,7 +233,12 @@ class BreakoutGame {
     this.ball = new Ball();
     this.score = 0;
     this.lives = 3;
-    this.playerBlocks = { J1: 0, J2: 0 };
+
+    this.playerBlocks = {
+      J1: 0,
+      J2: 0
+    };
+
     this.running = false;
     this.bricks = [];
 
@@ -261,6 +303,9 @@ class BreakoutGame {
 
     this.running = true;
 
+    // INICIA A MÚSICA
+    playBackgroundMusic();
+
     overlay.classList.add("hidden");
 
     if (statusText) {
@@ -271,7 +316,11 @@ class BreakoutGame {
   resetGame() {
     this.score = 0;
     this.lives = 3;
-    this.playerBlocks = { J1: 0, J2: 0 };
+
+    this.playerBlocks = {
+      J1: 0,
+      J2: 0
+    };
 
     this.createBricks();
     this.ball.reset();
@@ -288,23 +337,37 @@ class BreakoutGame {
     livesEl.textContent = this.lives;
   }
 
+  // RESULTADO DOS JOGADORES
   getWinnerMessage() {
     const j1 = this.playerBlocks.J1;
     const j2 = this.playerBlocks.J2;
 
     if (j1 > j2) {
-      return `JOGADOR 1 VENCEU!\n\nJogador 1: ${j1} blocos destruídos\nJogador 2: ${j2} blocos destruídos`;
+      return `JOGADOR 1 DESTRUIU MAIS BLOCOS!
+
+Jogador 1: ${j1} blocos destruídos
+Jogador 2: ${j2} blocos destruídos`;
     }
 
     if (j2 > j1) {
-      return `JOGADOR 2 VENCEU!\n\nJogador 1: ${j1} blocos destruídos\nJogador 2: ${j2} blocos destruídos`;
+      return `JOGADOR 2 DESTRUIU MAIS BLOCOS!
+
+Jogador 1: ${j1} blocos destruídos
+Jogador 2: ${j2} blocos destruídos`;
     }
 
-    return `EMPATE!\n\nJogador 1: ${j1} blocos destruídos\nJogador 2: ${j2} blocos destruídos`;
+    return `EMPATE!
+
+Jogador 1: ${j1} blocos destruídos
+Jogador 2: ${j2} blocos destruídos`;
   }
 
   showOverlay(title, message, buttonLabel, status) {
     this.running = false;
+
+    // PARA A MÚSICA QUANDO A PARTIDA É INTERROMPIDA
+    stopBackgroundMusic();
+
     keys.clear();
 
     overlayTitle.textContent = title;
@@ -352,6 +415,7 @@ class BreakoutGame {
       return;
     }
 
+    // COLISÃO COM OS BLOCOS
     for (const brick of this.bricks) {
       if (!brick.alive) continue;
 
@@ -365,6 +429,7 @@ class BreakoutGame {
 
         this.ball.vy *= -1;
 
+        // REGISTRA QUAL JOGADOR DESTRUIU O BLOCO
         if (this.ball.lastHitPlayer) {
           this.playerBlocks[this.ball.lastHitPlayer]++;
         }
@@ -376,6 +441,7 @@ class BreakoutGame {
       }
     }
 
+    // QUANDO TODOS OS BLOCOS FOREM DESTRUÍDOS
     if (this.bricks.every(brick => !brick.alive)) {
       this.createBricks();
       this.ball.reset();
