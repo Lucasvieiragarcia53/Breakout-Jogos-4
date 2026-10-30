@@ -1,4 +1,3 @@
-
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -50,16 +49,13 @@ class Paddle extends GameObject {
   }
 
   draw() {
-    ctx.save();
-    ctx.shadowBlur = 17;
-    ctx.shadowColor = this.color;
+    // Barra quadrada e sem efeitos.
     ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
 
-    ctx.beginPath();
-    ctx.roundRect(this.x, this.y, this.width, this.height, 7);
-    ctx.fill();
-
-    ctx.restore();
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
   }
 }
 
@@ -146,22 +142,13 @@ class Ball extends GameObject {
   }
 
   draw() {
-    ctx.save();
-    ctx.shadowBlur = 18;
-    ctx.shadowColor = "#ffffff";
+    // Bola quadrada e sem acabamento.
     ctx.fillStyle = "#ffffff";
+    ctx.fillRect(this.x, this.y, this.width, this.height);
 
-    ctx.beginPath();
-    ctx.arc(
-      this.x + this.radius,
-      this.y + this.radius,
-      this.radius,
-      0,
-      Math.PI * 2
-    );
-
-    ctx.fill();
-    ctx.restore();
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
   }
 }
 
@@ -176,19 +163,13 @@ class Brick extends GameObject {
   draw() {
     if (!this.alive) return;
 
-    ctx.save();
-    ctx.shadowBlur = 9;
-    ctx.shadowColor = this.color + "88";
+    // Blocos quadrados com bordas pretas.
     ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
 
-    ctx.beginPath();
-    ctx.roundRect(this.x, this.y, this.width, this.height, 4);
-    ctx.fill();
-
-    ctx.fillStyle = "rgba(255,255,255,.22)";
-    ctx.fillRect(this.x + 5, this.y + 3, this.width - 10, 2);
-
-    ctx.restore();
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
   }
 }
 
@@ -238,12 +219,13 @@ class BreakoutGame {
     const startX =
       (WIDTH - (cols * brickWidth + (cols - 1) * gap)) / 2;
 
+    // Cores exageradas.
     const colors = [
-      "#f87171",
-      "#fbbf24",
-      "#4ade80",
-      "#38bdf8",
-      "#a78bfa"
+      "#ff00ff",
+      "#ffff00",
+      "#00ff00",
+      "#ff6600",
+      "#00ffff"
     ];
 
     for (let row = 0; row < rows; row++) {
@@ -390,35 +372,30 @@ class BreakoutGame {
   drawBackground() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-    ctx.fillStyle = "#171717";
+    // Fundo cinza sem acabamento.
+    ctx.fillStyle = "#7b7b7b";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-    ctx.strokeStyle = "rgba(86, 117, 166, 0.10)";
-    ctx.lineWidth = 1;
+    // Linhas fortes e desalinhadas.
+    ctx.strokeStyle = "#333333";
+    ctx.lineWidth = 4;
 
-    for (let x = 20; x < WIDTH; x += 40) {
+    for (let x = 15; x < WIDTH; x += 55) {
       ctx.beginPath();
       ctx.moveTo(x, 0);
-      ctx.lineTo(x, HEIGHT);
+      ctx.lineTo(x + 18, HEIGHT);
       ctx.stroke();
     }
 
-    for (let y = 20; y < HEIGHT; y += 40) {
+    for (let y = 25; y < HEIGHT; y += 65) {
       ctx.beginPath();
       ctx.moveTo(0, y);
-      ctx.lineTo(WIDTH, y);
+      ctx.lineTo(WIDTH, y + 12);
       ctx.stroke();
     }
 
-    ctx.strokeStyle = "rgba(87,230,255,.18)";
-    ctx.setLineDash([5, 8]);
-
-    ctx.beginPath();
-    ctx.moveTo(0, HEIGHT - 42);
-    ctx.lineTo(WIDTH, HEIGHT - 42);
-    ctx.stroke();
-
-    ctx.setLineDash([]);
+    ctx.fillStyle = "#ff0000";
+    ctx.fillRect(0, HEIGHT - 42, WIDTH, 7);
   }
 
   draw() {
@@ -429,8 +406,8 @@ class BreakoutGame {
 
     this.ball.draw();
 
-    ctx.fillStyle = "#38bdf8";
-    ctx.font = "700 10px Inter, sans-serif";
+    ctx.fillStyle = "#000000";
+    ctx.font = "bold 12px Comic Sans MS, cursive";
 
     ctx.fillText(
       "JOGADOR 1",
@@ -438,7 +415,7 @@ class BreakoutGame {
       this.paddles[0].y - 9
     );
 
-    ctx.fillStyle = "#fb923c";
+    ctx.fillStyle = "#000000";
 
     ctx.fillText(
       "JOGADOR 2",
