@@ -1,14 +1,21 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 
+/* =========================================
+   CONFIGURAÇÕES GERAIS
+========================================= */
+
 :root {
-  color-scheme: light;
   --bg: #ffffff;
   --panel: #f5f5f5;
   --line: #d4d4d4;
   --muted: #525252;
-  --cyan: #404040;
-  --pink: #404040;
+
+  --cyan: #00ffff;
+  --pink: #ff00ff;
+  --yellow: #ffff00;
+  --green: #00ff00;
+  --orange: #ff6600;
 }
 
 * {
@@ -23,7 +30,21 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: #ffffff;
+
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #ffffff 12%,
+    #f0faff 25%,
+    #d8f4ff 38%,
+    #b9c8ed 50%,
+    #a78bc9 63%,
+    #c34c91 76%,
+    #e85b55 88%,
+    #ff8a32 100%
+  );
+
+  background-attachment: fixed;
   color: #171717;
   font-family: Inter, Arial, sans-serif;
 }
@@ -62,7 +83,9 @@ h1 span,
   font-size: 14px;
 }
 
-/* Navegação */
+/* =========================================
+   NAVEGAÇÃO
+========================================= */
 
 .site-nav {
   position: sticky;
@@ -74,7 +97,8 @@ h1 span,
   gap: 20px;
   padding: 16px max(22px, calc((100% - 1100px) / 2));
   border-bottom: 1px solid #e5e5e5;
-  background: #ffffff;
+  background: rgba(255, 255, 255, .94);
+  backdrop-filter: blur(12px);
 }
 
 .brand {
@@ -98,15 +122,16 @@ h1 span,
   text-decoration: none;
   font-size: 11px;
   font-weight: 700;
+  transition: color .3s;
 }
 
-.nav-links a:hover,
-.references a:hover,
-.reference-links a:hover {
-  color: #000000;
+.nav-links a:hover {
+  color: #ff00ff;
 }
 
-/* Apresentação */
+/* =========================================
+   APRESENTAÇÃO
+========================================= */
 
 .hero {
   position: relative;
@@ -145,6 +170,14 @@ h1 span,
   font-size: 13px;
   font-weight: 900;
   letter-spacing: .08em;
+  transition: .3s;
+}
+
+.hero-cta:hover {
+  background: linear-gradient(90deg, #00ffff, #ff00ff);
+  color: #171717;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px #00ffff55;
 }
 
 .hero-cta span {
@@ -186,7 +219,27 @@ h1 span,
 .hero-bricks i {
   height: 19px;
   border-radius: 3px;
-  background: #737373;
+  background: #ff00ff;
+}
+
+.hero-bricks i:nth-child(5n + 1) {
+  background: #ff00ff;
+}
+
+.hero-bricks i:nth-child(5n + 2) {
+  background: #ffff00;
+}
+
+.hero-bricks i:nth-child(5n + 3) {
+  background: #00ff00;
+}
+
+.hero-bricks i:nth-child(5n + 4) {
+  background: #ff6600;
+}
+
+.hero-bricks i:nth-child(5n + 5) {
+  background: #00ffff;
 }
 
 .hero-ball {
@@ -196,7 +249,8 @@ h1 span,
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: #262626;
+  background: #ff6600;
+  box-shadow: 0 0 12px #ff6600;
 }
 
 .hero-paddle {
@@ -206,7 +260,7 @@ h1 span,
   width: 38%;
   height: 12px;
   border-radius: 8px;
-  background: #737373;
+  background: linear-gradient(90deg, #00ffff, #ff00ff);
 }
 
 .hero-caption {
@@ -219,16 +273,95 @@ h1 span,
   letter-spacing: .2em;
 }
 
-/* Seções de conteúdo */
+/* =========================================
+   SEÇÕES E GRADIENTES
+========================================= */
 
 .content-section {
+  position: relative;
   padding: clamp(30px, 4vw, 54px);
   margin: 26px 0;
   border: 1px solid #d4d4d4;
   border-radius: 16px;
-  background: #ffffff;
+
+  /* Deixa o gradiente geral da página aparecer */
+  background-color: transparent;
+
   box-shadow: 0 5px 20px #00000008;
+  transition: background .5s ease;
 }
+
+/* História: branco para azul */
+
+#historia {
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f0faff 35%,
+    #d8f4ff 100%
+  );
+  border-color: #a8e7f5;
+}
+
+/* Proposta: azul para roxo */
+
+#proposta {
+  margin-top: 26px;
+  background: linear-gradient(
+    160deg,
+    #d8f4ff 0%,
+    #a7c8ed 35%,
+    #7d69b8 75%,
+    #663b83 100%
+  );
+  border-color: #8069bd;
+  color: #ffffff;
+}
+
+/* Controles: roxo para rosa */
+
+#controles {
+  background: linear-gradient(
+    160deg,
+    #663b83 0%,
+    #963b91 45%,
+    #c34c79 100%
+  );
+  border-color: #d66b9f;
+  color: #ffffff;
+}
+
+/* Jogo: rosa, laranja e cores vibrantes */
+
+#jogo {
+  background: linear-gradient(
+    145deg,
+    #c34c79 0%,
+    #e85b55 35%,
+    #ff8a32 70%,
+    #d94b8c 100%
+  );
+  border-color: #ff9a65;
+  color: #ffffff;
+}
+
+/* Referências: azul, ciano e roxo */
+
+#fontes {
+  background: linear-gradient(
+    145deg,
+    #552080 0%,
+    #294d86 40%,
+    #087e91 75%,
+    #101014 100%
+  );
+  border-color: #00bcd4;
+  color: #ffffff;
+}
+
+/* =========================================
+   TÍTULOS DAS SEÇÕES
+========================================= */
 
 .section-heading {
   margin-bottom: 34px;
@@ -253,6 +386,22 @@ h1 span,
   line-height: 1.7;
 }
 
+#proposta .section-heading > span,
+#proposta .section-heading h2,
+#controles .section-heading > span,
+#controles .section-heading h2,
+#jogo .section-heading > span,
+#jogo .section-heading h2,
+#jogo .section-heading > p,
+#fontes .section-heading > span,
+#fontes .section-heading h2 {
+  color: #ffffff;
+}
+
+/* =========================================
+   HISTÓRIA
+========================================= */
+
 .history-layout {
   display: grid;
   grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
@@ -264,13 +413,13 @@ h1 span,
   flex-direction: column;
   align-items: flex-start;
   padding: 28px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #9cdeed;
   border-radius: 10px;
-  background: #f5f5f5;
+  background: linear-gradient(145deg, #ffffff, #d9f5ff);
 }
 
 .year-card strong {
-  color: #404040;
+  color: #087e91;
   font: 800 40px "Barlow Condensed", sans-serif;
 }
 
@@ -283,7 +432,7 @@ h1 span,
 .year-line {
   height: 44px;
   margin: 8px 0 8px 7px;
-  border-left: 1px dashed #a3a3a3;
+  border-left: 1px dashed #087e91;
 }
 
 .history-copy p,
@@ -301,7 +450,7 @@ h1 span,
 
 .source-note {
   padding-left: 12px;
-  border-left: 2px solid #404040;
+  border-left: 2px solid #00bcd4;
   color: #525252 !important;
   font-size: 11px !important;
 }
@@ -317,13 +466,21 @@ h1 span,
 .tech-grid article,
 .control-card {
   padding: 26px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #b9dce9;
   border-radius: 12px;
-  background: #f7f7f7;
+  background: rgba(255, 255, 255, .78);
+  transition: transform .3s, box-shadow .3s;
+}
+
+.fact-row article:hover,
+.tech-grid article:hover,
+.control-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px #087e9125;
 }
 
 .fact-number {
-  color: #404040;
+  color: #087e91;
   font: 800 34px "Barlow Condensed", sans-serif;
 }
 
@@ -341,12 +498,9 @@ h1 span,
   line-height: 1.8;
 }
 
-/* Proposta do jogo */
-
-.proposal {
-  margin-top: 26px;
-  background: #ffffff;
-}
+/* =========================================
+   PROPOSTA DO JOGO
+========================================= */
 
 .proposal-grid {
   display: grid;
@@ -357,13 +511,18 @@ h1 span,
 .proposal-grid h3 {
   margin-top: 0;
   font-size: 23px;
+  color: #ffffff;
+}
+
+#proposta .proposal-grid p {
+  color: #f5eaff;
 }
 
 .mechanic-list > div {
   display: flex;
   gap: 18px;
   padding: 16px 0;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #ffffff55;
 }
 
 .mechanic-list > div:last-child {
@@ -371,7 +530,7 @@ h1 span,
 }
 
 .mechanic-list > div > span {
-  color: #404040;
+  color: #ffff00;
   font: 800 19px "Barlow Condensed", sans-serif;
 }
 
@@ -380,18 +539,21 @@ h1 span,
 }
 
 .mechanic-list strong {
+  color: #ffffff;
   font-size: 16px;
 }
 
 .mechanic-list small {
   display: inline-block;
   margin-top: 4px;
-  color: #404040;
+  color: #f1e4ff;
   font-size: 14px;
   line-height: 1.65;
 }
 
-/* Controles */
+/* =========================================
+   CONTROLES
+========================================= */
 
 .controls-grid {
   display: grid;
@@ -399,15 +561,30 @@ h1 span,
   gap: 20px;
 }
 
+.control-card {
+  background: rgba(255, 255, 255, .92);
+  color: #171717;
+}
+
+.cyan-card {
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 18px #00ffff35;
+}
+
+.pink-card {
+  border: 2px solid #ff00ff;
+  box-shadow: 0 0 18px #ff00ff35;
+}
+
 .player-tag {
-  color: #404040;
+  color: #087e91;
   font-size: 12px;
   font-weight: 900;
   letter-spacing: .2em;
 }
 
 .pink-card .player-tag {
-  color: #404040;
+  color: #c00091;
 }
 
 .control-card h3 {
@@ -440,23 +617,26 @@ kbd {
 .rules-box {
   margin-top: 20px;
   padding: 25px;
-  border-left: 3px solid #737373;
+  border-left: 4px solid #ffff00;
   border-radius: 0 8px 8px 0;
-  background: #f7f7f7;
+  background: rgba(30, 15, 45, .35);
 }
 
 .rules-box strong {
   font-size: 18px;
+  color: #ffff00;
 }
 
 .rules-box p {
   margin: 7px 0 0;
-  color: #333333;
+  color: #ffffff;
   font-size: 15px;
   line-height: 1.8;
 }
 
-/* Jogo */
+/* =========================================
+   JOGO
+========================================= */
 
 .play-section {
   padding-top: 75px;
@@ -468,10 +648,12 @@ kbd {
 
 .game-shell {
   overflow: hidden;
-  border: 1px solid #d4d4d4;
+  border: 2px solid #ff00ff;
   border-radius: 15px;
   background: #262626;
-  box-shadow: none;
+  box-shadow:
+    0 0 18px #ff00ff45,
+    0 0 35px #ff660025;
 }
 
 .hud {
@@ -510,9 +692,12 @@ kbd {
   letter-spacing: .05em;
 }
 
-#score,
+#score {
+  color: #00ffff;
+}
+
 #lives {
-  color: #ffffff;
+  color: #ffff00;
 }
 
 .canvas-wrap {
@@ -558,12 +743,14 @@ canvas {
   width: 8px;
   height: 8px;
   border-radius: 3px;
-  background: #a3a3a3;
 }
 
-.p1,
+.p1 {
+  background: #00ffff;
+}
+
 .p2 {
-  background: #a3a3a3;
+  background: #ff00ff;
 }
 
 .shared-note {
@@ -575,26 +762,29 @@ canvas {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #ffffff;
+  background: #ffff00;
 }
 
-/* Botões */
+/* =========================================
+   BOTÕES
+========================================= */
 
 button {
   padding: 13px 34px;
   border: 0;
   border-radius: 7px;
-  background: #262626;
+  background: linear-gradient(90deg, #ff00ff, #ff6600);
   color: #ffffff;
   font: 900 13px Inter, sans-serif;
   letter-spacing: .12em;
   cursor: pointer;
-  transition: transform .15s, filter .15s;
+  transition: transform .15s, filter .15s, box-shadow .3s;
 }
 
 button:hover {
-  filter: brightness(1.05);
+  filter: brightness(1.12);
   transform: translateY(-2px);
+  box-shadow: 0 0 18px #ff00ff75;
 }
 
 button:active {
@@ -605,19 +795,23 @@ button:active {
   display: block;
   margin: 12px 15px 12px auto;
   padding: 10px 18px;
-  border: 1px solid #737373;
+  border: 1px solid #00ffff;
   border-radius: 6px;
-  background: #ffffff;
-  color: #262626;
+  background: #262626;
+  color: #00ffff;
   font-size: 11px;
   letter-spacing: .06em;
   box-shadow: none;
 }
 
 #fullscreenButton:hover {
-  background: #262626;
-  color: #ffffff;
+  background: #00ffff;
+  color: #171717;
 }
+
+/* =========================================
+   TELA INICIAL DO JOGO
+========================================= */
 
 .overlay {
   position: absolute;
@@ -637,11 +831,11 @@ button:active {
 .overlay-card {
   width: min(390px, 100%);
   padding: 30px 28px 25px;
-  border: 1px solid #525252;
+  border: 1px solid #ff00ff;
   border-radius: 14px;
   background: #262626;
   text-align: center;
-  box-shadow: none;
+  box-shadow: 0 0 25px #ff00ff35;
 }
 
 .mini-icon {
@@ -651,8 +845,8 @@ button:active {
   height: 40px;
   margin: 0 auto 12px;
   border-radius: 12px;
-  background: #404040;
-  color: #ffffff;
+  background: linear-gradient(135deg, #ff00ff, #00ffff);
+  color: #171717;
   font-size: 23px;
 }
 
@@ -676,7 +870,9 @@ button:active {
   font-size: 10px;
 }
 
-/* Tela cheia */
+/* =========================================
+   TELA CHEIA
+========================================= */
 
 .game-shell:fullscreen {
   display: flex;
@@ -697,12 +893,12 @@ button:active {
   flex-shrink: 0;
   margin: 0 0 12px auto;
   background: #262626;
-  color: #ffffff;
-  border-color: #737373;
+  color: #00ffff;
+  border-color: #00ffff;
 }
 
 .game-shell:fullscreen #fullscreenButton:hover {
-  background: #ffffff;
+  background: #00ffff;
   color: #171717;
 }
 
@@ -732,7 +928,9 @@ button:active {
   flex-shrink: 0;
 }
 
-/* Outros elementos */
+/* =========================================
+   OUTROS ELEMENTOS
+========================================= */
 
 .info-grid {
   display: grid;
@@ -751,7 +949,7 @@ button:active {
 
 .card-icon {
   margin-bottom: 10px;
-  color: #404040;
+  color: #087e91;
   font: 800 11px "Barlow Condensed", sans-serif;
   letter-spacing: .12em;
 }
@@ -775,7 +973,7 @@ button:active {
 }
 
 .tech-grid article strong {
-  color: #404040;
+  color: #087e91;
   font-size: 19px;
 }
 
@@ -831,6 +1029,29 @@ button:active {
   line-height: 1.7;
 }
 
+/* Referências */
+
+#fontes .history-copy p {
+  color: #f0f0f0;
+}
+
+#fontes .history-copy strong {
+  color: #00ffff;
+}
+
+#fontes .history-copy a {
+  color: #ffff00;
+  overflow-wrap: anywhere;
+}
+
+#fontes .history-copy a:hover {
+  color: #ff00ff;
+}
+
+/* =========================================
+   RODAPÉ
+========================================= */
+
 footer {
   padding: 23px 0 0;
   color: #525252;
@@ -842,9 +1063,24 @@ footer:empty {
   display: none;
 }
 
-/* Responsividade */
+footer:not(:empty) {
+  min-height: 8px;
+  background: linear-gradient(
+    90deg,
+    #ff00ff,
+    #ff6600,
+    #ffff00,
+    #00ff00,
+    #00ffff
+  );
+}
+
+/* =========================================
+   RESPONSIVIDADE
+========================================= */
 
 @media (max-width: 760px) {
+
   .page {
     width: calc(100% - 20px);
     padding-top: 20px;
@@ -930,6 +1166,7 @@ footer:empty {
 }
 
 @media (max-width: 480px) {
+
   .controls-grid,
   .tech-grid {
     grid-template-columns: 1fr;
@@ -945,6 +1182,7 @@ footer:empty {
 }
 
 @media (max-height: 550px) {
+
   .game-shell:fullscreen {
     padding: 5px 15px;
   }
