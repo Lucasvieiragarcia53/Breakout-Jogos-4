@@ -49,7 +49,6 @@ class Paddle extends GameObject {
   }
 
   draw() {
-    // Barra quadrada e sem efeitos.
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
 
@@ -68,6 +67,7 @@ class Ball extends GameObject {
     this.vx = 3.8;
     this.vy = -4.9;
     this.stuck = true;
+    this.lastHitPlayer = null;
   }
 
   launch() {
@@ -82,6 +82,7 @@ class Ball extends GameObject {
     this.vy = -4.9;
 
     this.stuck = true;
+    this.lastHitPlayer = null;
   }
 
   update(paddles) {
@@ -119,6 +120,7 @@ class Ball extends GameObject {
       ) {
         this.y = paddle.y - this.height;
         this.vy = -Math.abs(this.vy);
+        this.lastHitPlayer = paddle.label;
 
         const hit =
           (this.x + this.width / 2) -
@@ -142,7 +144,6 @@ class Ball extends GameObject {
   }
 
   draw() {
-    // Bola quadrada e sem acabamento.
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(this.x, this.y, this.width, this.height);
 
@@ -163,7 +164,6 @@ class Brick extends GameObject {
   draw() {
     if (!this.alive) return;
 
-    // Blocos quadrados com bordas pretas.
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.width, this.height);
 
@@ -196,6 +196,7 @@ class BreakoutGame {
     this.ball = new Ball();
     this.score = 0;
     this.lives = 3;
+    this.playerBlocks = { J1: 0, J2: 0 };
     this.running = false;
     this.bricks = [];
 
@@ -219,7 +220,6 @@ class BreakoutGame {
     const startX =
       (WIDTH - (cols * brickWidth + (cols - 1) * gap)) / 2;
 
-    // Cores exageradas.
     const colors = [
       "#ff00ff",
       "#ffff00",
@@ -271,6 +271,7 @@ class BreakoutGame {
   resetGame() {
     this.score = 0;
     this.lives = 3;
+    this.playerBlocks = { J1: 0, J2: 0 };
 
     this.createBricks();
     this.ball.reset();
@@ -285,6 +286,21 @@ class BreakoutGame {
   updateHUD() {
     scoreEl.textContent = String(this.score).padStart(4, "0");
     livesEl.textContent = this.lives;
+  }
+
+  getWinnerMessage() {
+    const j1 = this.playerBlocks.J1;
+    const j2 = this.playerBlocks.J2;
+
+    if (j1 > j2) {
+      return `JOGADOR 1 VENCEU!\n\nJogador 1: ${j1} blocos destruídos\nJogador 2: ${j2} blocos destruídos`;
+    }
+
+    if (j2 > j1) {
+      return `JOGADOR 2 VENCEU!\n\nJogador 1: ${j1} blocos destruídos\nJogador 2: ${j2} blocos destruídos`;
+    }
+
+    return `EMPATE!\n\nJogador 1: ${j1} blocos destruídos\nJogador 2: ${j2} blocos destruídos`;
   }
 
   showOverlay(title, message, buttonLabel, status) {
@@ -317,8 +333,8 @@ class BreakoutGame {
 
       if (this.lives <= 0) {
         this.showOverlay(
-          "Fim de jogo",
-          `A equipe fez ${this.score} pontos. Tentem novamente e cooperem para manter a bola em jogo!`,
+          "FIM DE JOGO!",
+          this.getWinnerMessage(),
           "JOGAR NOVAMENTE",
           "Partida encerrada"
         );
@@ -349,6 +365,10 @@ class BreakoutGame {
 
         this.ball.vy *= -1;
 
+        if (this.ball.lastHitPlayer) {
+          this.playerBlocks[this.ball.lastHitPlayer]++;
+        }
+
         this.score += brick.points;
         this.updateHUD();
 
@@ -361,10 +381,10 @@ class BreakoutGame {
       this.ball.reset();
 
       this.showOverlay(
-        "Campo limpo!",
-        "Vocês destruíram todos os blocos! Continuem jogando para bater a pontuação.",
-        "CONTINUAR",
-        "Campo limpo"
+        "CAMPO LIMPO!",
+        this.getWinnerMessage(),
+        "PRÓXIMA RODADA",
+        "Rodada concluída"
       );
     }
   }
@@ -372,11 +392,9 @@ class BreakoutGame {
   drawBackground() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-    // Fundo cinza sem acabamento.
     ctx.fillStyle = "#7b7b7b";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-    // Linhas fortes e desalinhadas.
     ctx.strokeStyle = "#333333";
     ctx.lineWidth = 4;
 
